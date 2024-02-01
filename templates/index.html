@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WaveTunes</title>
+    <style>
+        /* Your existing styles remain unchanged */
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1f1f1f;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #61dafb;
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+
+        audio {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 20px;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .song-box {
+            border: 1px solid #61dafb;
+            padding: 20px;
+            margin: 10px;
+            cursor: pointer;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            background-color: #333;
+            border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            width: 100vw;
+            box-sizing: border-box;
+            column-gap: 20px;
+            flex-grow: 1;
+        }
+        
+        .song-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .song-symbols {
+            display: flex;
+            justify-content: space-between;
+  }
+
+
+        .song-box.playing {
+            border: 2px solid #61dafb;
+        }
+
+        .song-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .play-controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .play-symbol, .prev-symbol, .next-symbol {
+            font-size: 24px;
+            color: #61dafb;
+            cursor: pointer;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.3s;
+        }
+
+        .song-box:hover .play-symbol,
+        .song-box.playing .play-symbol,
+        .song-box:hover .prev-symbol,
+        .song-box:hover .next-symbol {
+            opacity: 1;
+        }
+
+        .song-image {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none; /* Initially hide the song image */
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <h1>WaveTunes</h1>
+        <img src="" alt="Currently Playing" class="song-image">
+        <audio id="musicPlayer" controls>
+            Your browser does not support the audio tag.
+        </audio>
+        <ul id="playlist">
+            <li class="song-box" data-song-url="https://cdn.jattpendu.com/download/128k-dmvga/Demon-In-Me-(From-Garuda-Gamana-Vrishabha-Vahana).mp3" data-image-url="https://cdn.jattpendu.com/thumbmed/30496640.jpg">
+                <span class="prev-symbol">&#9668;</span>
+                <span class="play-symbol">►</span>
+                <span class="next-symbol">&#9658;</span>
+                Demon In Me
+            </li>
+            <li class="song-box" data-song-url="https://cdn.jattpendu.com/download/128k-dctmf/Maadeva.mp3" data-image-url="https://cdn.jattpendu.com/thumbmed/18666589.jpg">
+                <span class="prev-symbol">&#9668;</span>
+                <span class="play-symbol">►</span>
+                <span class="next-symbol">&#9658;</span>
+                Maadeva
+            </li>
+            <li class="song-box" data-song-url="https://cdn.jattpendu.com/download/128k-wsuye/Varaha-Roopam-Daiva-Va-Rishtam.mp3" data-image-url="https://upload.wikimedia.org/wikipedia/en/thumb/6/69/Kantara-_Chapter_1_poster.jpg/220px-Kantara-_Chapter_1_poster.jpg">
+                <span class="prev-symbol">&#9668;</span>
+                <span class="play-symbol">►</span>
+                <span class="next-symbol">&#9658;</span>
+                Varaha Roopam
+            </li>
+            <li class="song-box" data-song-url="https://cdn.jattpendu.com/download/128k-dmodo/Chandrachooda.mp3" data-image-url="https://cdn.jattpendu.com/thumbmed/31264774.jpg">
+                <span class="prev-symbol">&#9668;</span>
+                <span class="play-symbol">►</span>
+                <span class="next-symbol">&#9658;</span>
+                Chandrachooda
+            </li>
+            <li class="song-box" data-song-url="https://cdn.jattpendu.com/download/128k-dakyq/Kaagadada-Doniyalli.mp3" data-image-url="https://cdn.jattpendu.com/thumbmed/3139808.jpg">
+                <span class="prev-symbol">&#9668;</span>
+                <span class="play-symbol">►</span>
+                <span class="next-symbol">&#9658;</span>
+                Kaagadada Doniyalli
+            </li>
+            <li class="song-box" data-song-url="https://www.pagalworld.com.pe/files/download/id/68406" data-image-url="https://wallpaperbuzz.net/wp-content/uploads/2023/11/Animal-HD-WAllpaper-14.jpg">
+                <span class="prev-symbol">&#9668;</span>
+                <span class="play-symbol">►</span>
+                <span class="next-symbol">&#9658;</span>
+                Arjan Vailly
+            </li>
+            <!-- Add the remaining songs in a similar fashion -->
+        </ul>
+    </div>
+
+    <script>
+        class WaveTunesPlayer {
+            constructor() {
+                this.musicPlayer = document.getElementById('musicPlayer');
+                this.songImage = document.querySelector('.song-image');
+                this.playlist = document.getElementById('playlist');
+                this.currentlyPlayingIndex = 0;
+            }
+
+            playSong(songUrl, imageUrl, songBox) {
+                if (this.currentlyPlayingElement) {
+                    this.currentlyPlayingElement.classList.remove('playing');
+                }
+
+                this.musicPlayer.src = songUrl;
+                this.songImage.src = imageUrl;
+
+                this.musicPlayer.load();
+                this.musicPlayer.play();
+
+                this.songImage.style.display = 'block';
+                songBox.classList.add('playing');
+                this.currentlyPlayingElement = songBox;
+            }
+
+            playPause() {
+                if (this.musicPlayer.paused) {
+                    this.musicPlayer.play();
+                } else {
+                    this.musicPlayer.pause();
+                }
+            }
+
+            changeVolume(value) {
+                this.musicPlayer.volume = value;
+            }
+
+            playNextSong() {
+                this.currentlyPlayingIndex++;
+                if (this.currentlyPlayingIndex >= this.playlist.children.length) {
+                    this.currentlyPlayingIndex = 0;
+                }
+
+                const nextSong = this.playlist.children[this.currentlyPlayingIndex];
+                const songUrl = nextSong.getAttribute('data-song-url');
+                const imageUrl = nextSong.getAttribute('data-image-url');
+                this.playSong(songUrl, imageUrl, nextSong);
+            }
+
+            setupEventListeners() {
+                this.musicPlayer.addEventListener('ended', () => {
+                    this.playNextSong();
+                });
+            }
+        }
+
+        const waveTunes = new WaveTunesPlayer();
+        waveTunes.setupEventListeners();
+
+        document.querySelectorAll('.song-box').forEach((songBox, index) => {
+            songBox.addEventListener('click', function () {
+                const songUrl = this.getAttribute('data-song-url');
+                const imageUrl = this.getAttribute('data-image-url');
+                waveTunes.currentlyPlayingIndex = index;
+                waveTunes.playSong(songUrl, imageUrl, this);
+            });
+
+            const playSymbol = songBox.querySelector('.play-symbol');
+            playSymbol.addEventListener('click', function (event) {
+                event.stopPropagation();
+                waveTunes.playPause();
+            });
+
+            const prevSymbol = songBox.querySelector('.prev-symbol');
+            prevSymbol.addEventListener('click', function (event) {
+                event.stopPropagation();
+                waveTunes.currentlyPlayingIndex--;
+                if (waveTunes.currentlyPlayingIndex < 0) {
+                    waveTunes.currentlyPlayingIndex = waveTunes.playlist.children.length - 1;
+                }
+                const prevSong = waveTunes.playlist.children[waveTunes.currentlyPlayingIndex];
+                const songUrl = prevSong.getAttribute('data-song-url');
+                const imageUrl = prevSong.getAttribute('data-image-url');
+                waveTunes.playSong(songUrl, imageUrl, prevSong);
+            });
+
+            const nextSymbol = songBox.querySelector('.next-symbol');
+            nextSymbol.addEventListener('click', function (event) {
+                event.stopPropagation();
+                waveTunes.playNextSong();
+            });
+        });
+
+        document.querySelector('input[type="range"]').addEventListener('input', function () {
+            const volumeValue = this.value;
+            waveTunes.changeVolume(volumeValue);
+        });
+    </script>
+</body>
+</html>

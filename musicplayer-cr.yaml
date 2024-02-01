@@ -1,0 +1,24 @@
+apiVersion: example.com/v1
+kind: MusicPlayer
+metadata:
+  name: example-musicplayer
+spec:
+  songs:
+  - name: "Demon In Me"
+    url: "https://cdn.jattpendu.com/download/128k-dmvga/Demon-In-Me-(From-Garuda-Gamana-Vrishabha-Vahana).mp3"
+    imageUrl: "https://cdn.jattpendu.com/thumbmed/30496640.jpg"
+  - name: "Maadeva"
+    url: "https://cdn.jattpendu.com/download/128k-dctmf/Maadeva.mp3"
+    imageUrl: "https://cdn.jattpendu.com/thumbmed/18666589.jpg"
+  - name: "Varaha Roopam"
+    url: "https://cdn.jattpendu.com/download/128k-wsuye/Varaha-Roopam-Daiva-Va-Rishtam.mp3"
+    imageUrl: "https://upload.wikimedia.org/wikipedia/en/thumb/6/69/Kantara-_Chapter_1_poster.jpg/220px-Kantara-_Chapter_1_poster.jpg"
+  - name: "Chandrachooda"
+    url: "https://cdn.jattpendu.com/download/128k-dmodo/Chandrachooda.mp3"
+    imageUrl: "https://cdn.jattpendu.com/thumbmed/31264774.jpg"
+  - name: "Kaagadada Doniyalli"
+    url: "https://cdn.jattpendu.com/download/128k-dakyq/Kaagadada-Doniyalli.mp3"
+    imageUrl: "https://cdn.jattpendu.com/thumbmed/3139808.jpg"
+  - name: "Arjan Vailly"
+    url: "https://www.pagalworld.com.pe/files/download/id/68406"
+    imageUrl: "https://wallpaperbuzz.net/wp-content/uploads/2023/11/Animal-HD-WAllpaper-14.jpg"
